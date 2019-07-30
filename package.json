@@ -1,0 +1,37 @@
+{
+  "name": "keyvault",
+  "version": "1.0.0",
+  "description": "demo project for keyvault",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build && func extensions install",
+    "start:host": "func start",
+    "start": "npm run start:host & npm run watch",
+    "build:production": "npm run prestart && npm prune --production",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "adal-node": "^0.1.28",
+    "azure-keyvault": "^3.0.4"
+  },
+  "devDependencies": {
+    "@azure/functions": "^1.0.2-beta2",
+    "typescript": "^3.3.3"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rabwill/keyvault.git"
+  },
+  "keywords": [
+    "keyvault",
+    "azure"
+  ],
+  "author": "Rabia Williams",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rabwill/keyvault/issues"
+  },
+  "homepage": "https://github.com/rabwill/keyvault#readme"
+}
