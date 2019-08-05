@@ -13,11 +13,19 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     if (name) {
      // The ms-rest-azure library allows us to login with MSI by providing the resource name. In this case the resource is Key Vault.
 // For public regions the resource name is Key Vault
-msRestAzure.loginWithServicePrincipalSecret(clientId,clientSecret,"rabia-keyvault-demo").then( (credentials) => {
+msRestAzure.interactiveLogin().then((credentials) => {
     const keyVaultClient = new KeyVault.KeyVaultClient(credentials);
    var vaultUri = "https://" + "rabia-keyvault-demo." + ".vault.azure.net/"; 
         return keyVaultClient.getSecret(vaultUri,secretName,secretVersion)        
         .then((bundle) => {
+            context.log("Successfully retrieved 'test-secret'");
+            context.done(null,bundle)
+// Authenticator - retrieves the access token
+
+        context.res = {
+            // status: 200, /* Defaults to 200 */
+            body: "Hello " + (req.query.name || req.body.name)
+        };
             console.log("Successfully retrieved 'test-secret'");
             console.log(bundle);
         })
@@ -30,17 +38,7 @@ msRestAzure.loginWithServicePrincipalSecret(clientId,clientSecret,"rabia-keyvaul
     // keyVaultClient.getSecret(vaultUri, "AppSecret", "").then(function(response){
     //     console.log(response);    
     // })
-});
-
-
-
-// Authenticator - retrieves the access token
-
-        context.res = {
-            // status: 200, /* Defaults to 200 */
-            body: "Hello " + (req.query.name || req.body.name)
-        };
-    }
+});   }
     else {
         context.res = {
             status: 400,
